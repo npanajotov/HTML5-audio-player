@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Domaci 2</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+<body>
+<div class="player">
+    <div class="info">
+        <div class="image">
+            <img src="images/track_1.jpg" alt="Peaceful Days">
+        </div>
+        <div class="song">
+            Peaceful Days
+        </div>
+        <div class="author">
+            Household Trio
+        </div>
+        <div class="composer">
+            Dušan Čoko, Stefan Filipović
+        </div>
+        <div class="year">
+            2010
+        </div>
+        <button class="playlist-btn"><i class="fa fa-list"></i></button>
+    </div>
+    <div class="control">
+        <audio id="audio">
+            <source src="tracks/track_1.mp3" type="audio/mp3"/>
+            Vaš pregledač ne podržava HTML5 audio tag.
+        </audio>
+        <button><i class="fa fa-play"></i></button>
+        <div class="now-playing">Peaceful Days</div>
+        <div class="time">
+            <span id="currently">0:00</span>
+            / <span id="total">3:04</span>
+        </div>
+    </div>
+</div>
+<div class="playlist">
+    <ul>
+        <li>
+            <button data-audio="track_1.mp3" data-song="Peaceful Days" data-author="Household Trio"
+                    data-composer="Dušan Čoko, Stefan Filipović" data-year="2010" data-image="track_1.jpg">Peaceful Days
+                <small>3:04</small>
+            </button>
+        </li>
+        <li>
+            <button data-audio="track_2.mp3" data-song="Significance" data-author="Household Trio"
+                    data-composer="Dušan Čoko, Stefan Filipović" data-year="2011" data-image="track_2.jpg">Significance
+                <small>3:42</small>
+            </button>
+        </li>
+        <li>
+            <button data-audio="track_3.mp3" data-song="Hand is dealt" data-author="Household Trio"
+                    data-composer="Dušan Čoko, Igor Stolić" data-year="2011" data-image="track_3.jpg">Hand is dealt
+                <small>3:23</small>
+            </button>
+        </li>
+    </ul>
+</div>
+<script>
+    var audio = document.getElementById('audio');
+    var playlistElement = document.getElementsByClassName('playlist')[0];
+    var playlist = document.getElementsByClassName('playlist')[0].getElementsByTagName('button');
+    var play_pause = document.getElementsByClassName('control')[0].getElementsByTagName('button')[0];
+    var now_playing = document.getElementsByClassName('control')[0].getElementsByClassName('now-playing')[0];
+    var info = document.getElementsByClassName('info')[0];
+    var image = info.getElementsByTagName('img')[0];
+    var song = info.getElementsByClassName('song')[0];
+    var author = info.getElementsByClassName('author')[0];
+    var composer = info.getElementsByClassName('composer')[0];
+    var year = info.getElementsByClassName('year')[0];
+    var show_hide_playlist = info.getElementsByClassName('playlist-btn')[0];
+    var currently = document.getElementsByClassName('time')[0].getElementsByTagName('span')[0];
+    var total = document.getElementsByClassName('time')[0].getElementsByTagName('span')[1];
+
+    for (var i = 0; i < playlist.length; i++) {
+        playlist[i].addEventListener("click", function () {
+            var n_source = this.getAttribute('data-audio');
+            var n_song = this.getAttribute('data-song');
+            var n_author = this.getAttribute('data-author');
+            var n_composer = this.getAttribute('data-composer');
+            var n_year = this.getAttribute('data-year');
+            var n_image = this.getAttribute('data-image');
+            if (audio.canPlayType('audio/mp3')) {
+                audio.src = 'tracks/' + n_source;
+                song.innerHTML = n_song;
+                composer.innerHTML = n_composer;
+                author.innerHTML = n_author;
+                year.innerHTML = n_year;
+                now_playing.innerHTML = n_song;
+                image.src = 'images/' + n_image;
+            }
+            audio.currentTime = 0;
+            play_pause.innerHTML = '<i class="fa fa-pause"></i>';
+            audio.play();
+        });
+    }
+    play_pause.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            this.innerHTML = '<i class="fa fa-pause"></i>';
+        } else {
+            audio.pause();
+            this.innerHTML = '<i class="fa fa-play"></i>';
+        }
+    });
+
+    audio.addEventListener('loadedmetadata', function () {
+        var minutes = Math.floor(parseInt(audio.duration) / 60) % 60;
+        var seconds = parseInt(audio.duration) % 60;
+        var sec = seconds < 10 ? "0" + seconds : seconds;
+        total.innerHTML = minutes + ":" + sec;
+    });
+    audio.addEventListener('timeupdate', function () {
+        var minutes = Math.floor(parseInt(audio.currentTime) / 60) % 60;
+        var seconds = parseInt(audio.currentTime) % 60;
+        var sec = seconds < 10 ? "0" + seconds : seconds;
+        currently.innerHTML = minutes + ":" + sec;
+    });
+    show_hide_playlist.addEventListener('click', function () {
+        if (playlistElement.classList.contains('closed')) {
+            playlistElement.className = 'playlist';
+        } else {
+            playlistElement.className += ' closed';
+        }
+    });
+
+
+</script>
+</body>
+</html>
