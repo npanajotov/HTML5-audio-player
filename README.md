@@ -3,5 +3,5 @@
 - Vanilla Javascript
 - Font awesome
 
-![HTML5 Audio player](https://s12.postimg.org/upbpjloa5/html5-audio-player.jpg)
+![HTML5 Audio player](https://s1.postimg.org/h3ywetk9r/html5-audio-player.jpg)
 
